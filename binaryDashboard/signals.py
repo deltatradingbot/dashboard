@@ -2,7 +2,7 @@ import oandapyV20
 from oandapyV20 import API
 import oandapyV20.endpoints.instruments as instruments
 import pandas as pd
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from .psar_func import PSAR
 from datetime import datetime ,timedelta
 import time
