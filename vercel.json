@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "binaryDashboard/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "binaryDashboard/wsgi.py"
+    }
+  ]
+}
