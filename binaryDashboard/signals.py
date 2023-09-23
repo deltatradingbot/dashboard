@@ -39,7 +39,6 @@ def getSignal(pair,timeframe,sig):
 
     df = pd.DataFrame(price_data)
     psarObj = PSAR()
-
     df['sar'] = df.apply(
     lambda x: psarObj.calcPSAR(x['high'], x['low']), axis=1)
 
