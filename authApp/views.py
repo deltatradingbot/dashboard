@@ -43,6 +43,7 @@ def RegisterPage(request):
         try:
             user = User.objects.create_user(username = email , password=pwrd)
             messages.success(request, "Congrats! You are registered successfully.")
+            return redirect('/auth/login')
         except:
             messages.error(request, "User already registered!!")
 

@@ -21,8 +21,8 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 <!--===============================================================================================-->
 </head>
 <body>
@@ -33,7 +33,15 @@
 					<div>
 						<center><h1 style="color: rgb(42, 81, 165);">We are waiting for you <i class="fa-regular fa-face-laugh-beam"></i></h1>
 						<br><br><br>
-						<h2><b>Amount to be paid : </b><span style="color: rgb(50, 132, 50);">$19 </span><span style="color: rgb(128, 128, 128);">USD</span></h2>
+						<div class="row">
+							<div class="col-8"><h5><b>Amount to be paid : </b><span id="amount" style="color: rgb(50, 132, 50);"><big>$19</big></span></h5></div>
+							<div class="dropdown show col-auto mr-3 mb-2">
+								<a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">USD</a>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item" href="#">USD</a>
+								<a class="dropdown-item" href="#">INR</a>
+								</div>
+						  </div></div>
 					</center>
 					</div>
 					<br>
@@ -75,24 +83,24 @@
 	</div>
 	
 	
-
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	
-<!--===============================================================================================-->	
-	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
-	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'vendor/tilt/tilt.jquery.min.js' %}"></script>
-	<script >
-		$('.js-tilt').tilt({
-			scale: 1.1
-		})
-	</script>
-<!--===============================================================================================-->
+	
 	<script src="{% static 'js/main.js' %}"></script>
+
+	<script>
+		$(".dropdown-menu a").click(function(){
+  $(this).parents(".dropdown").find('.btn').html($(this).text() + '<span class="caret"></span>');
+  $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+  if($(this).text() == "USD"){
+	$("#amount").html("$19")
+  }else{
+	$("#amount").html("1600 INR")
+  }
+});
+	</script>
 
 </body>
 </html>
