@@ -217,6 +217,14 @@ iframe {
   max-width: 100%;
 }
 
+.payment100-pic {
+  width: 350px;
+}
+
+.payment100-pic img {
+  max-width: 100%;
+}
+
 
 /*------------------------------------------------------------------
 [  ]*/
@@ -384,6 +392,10 @@ iframe {
     width: 35%;
   }
 
+  .payment100-pic {
+    width: 35%;
+  }
+
   .login100-form {
     width: 50%;
   }
@@ -393,9 +405,15 @@ iframe {
   .wrap-login100 {
     padding: 100px 80px 33px 80px;
   }
-
   .login100-pic {
     display: none;
+  }
+
+  .payment100-pic {
+    /* display: none; */
+    width: 100%;
+    margin-bottom: 20px;
+
   }
 
   .login100-form {
