@@ -9,7 +9,7 @@ from datetime import datetime
 # Create your views here.
 def LoginPage(request):
     if request.user.is_authenticated:
-        user_id = User.objects.get(username=request.user).pk
+        user_id = User.objects.get(email=request.user.email).pk
         payObj = PaymentModal.objects.filter(user_id=user_id)
         if not payObj.exists():
             return render(request, 'dashboard-locked.html')
@@ -18,8 +18,9 @@ def LoginPage(request):
         return redirect('/dashboard')
     if request.method == "POST":
         email = request.POST.get('email')
-        password =request.POST.get('pass')
-        user = authenticate(request, username=email, password=password)
+        password =request.POST.get('pass')   
+        user = User.objects.get(email=email.lower())
+        user = authenticate(request, username=user, password=password)
         if user is not None:
             login(request, user)
             return redirect('/dashboard')
@@ -33,6 +34,14 @@ def LogoutView(request):
     return redirect('/auth/login')
 
 def RegisterPage(request):
+    if request.user.is_authenticated:
+        user_id = User.objects.get(email=request.user.email).pk
+        payObj = PaymentModal.objects.filter(user_id=user_id)
+        if not payObj.exists():
+            return render(request, 'dashboard-locked.html')
+        elif not payObj[0].verified:
+            return render(request, 'dashboard-locked.html')
+        return redirect('/dashboard')
     if request.method == "POST":
         name = request.POST['name']
         email = request.POST['email']
@@ -41,7 +50,7 @@ def RegisterPage(request):
         if pwrd != pwrd2:
             messages.error(request, "Password doesn't match.")
         try:
-            user = User.objects.create_user(username = email , password=pwrd)
+            user = User.objects.create_user(username = name,email=email, password=pwrd)
             messages.success(request, "Congrats! You are registered successfully.")
             return redirect('/auth/login')
         except:
@@ -52,7 +61,7 @@ def RegisterPage(request):
 def PaymentPage(request):
     if request.method == "POST":
         if request.POST['ref']:
-            user_id = User.objects.get(username=request.user).pk
+            user_id = User.objects.get(email=request.user.email).pk
             my_instance = PaymentModal(user_id=user_id, pay_id=request.POST['ref'],latest_pay=datetime.now())
             my_instance.save()
             return redirect('/auth/pay-verify')

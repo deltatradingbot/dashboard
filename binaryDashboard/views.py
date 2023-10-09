@@ -13,7 +13,7 @@ def IndexPage(request):
 
 def DashboardPage(request):
     if request.user.is_authenticated:
-        user_id = User.objects.get(username=request.user).pk
+        user_id = User.objects.get(email=request.user.email).pk
         payObj = PaymentModal.objects.filter(user_id=user_id)
         if not payObj.exists():
             return render(request, 'dashboard-locked.html')
@@ -37,7 +37,7 @@ def DashboardPage(request):
 
 def RulesPage(request):
     if request.user.is_authenticated:
-        user_id = User.objects.get(username=request.user).pk
+        user_id = User.objects.get(email=request.user.email).pk
         payObj = PaymentModal.objects.filter(user_id=user_id)
         if not payObj.exists():
             return render(request, 'dashboard-locked.html')
@@ -49,7 +49,7 @@ def RulesPage(request):
 
 def DisclaimerPage(request):
     if request.user.is_authenticated:
-        user_id = User.objects.get(username=request.user).pk
+        user_id = User.objects.get(email=request.user.email).pk
         payObj = PaymentModal.objects.filter(user_id=user_id)
         if not payObj.exists():
             return render(request, 'dashboard-locked.html')
@@ -61,7 +61,7 @@ def DisclaimerPage(request):
 
 def SignalsAPI(request):
     if request.user.is_authenticated:
-        user_id = User.objects.get(username=request.user).pk
+        user_id = User.objects.get(email=request.user.email).pk
         payObj = PaymentModal.objects.filter(user_id=user_id)
         if not payObj.exists():
             return render(request, 'dashboard-locked.html')

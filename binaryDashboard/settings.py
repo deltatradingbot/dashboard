@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-chqhh2#^8_f8u8^h=*qax%sfl2nv8=da)6ar(le*u-)l-a2j%r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hitesh1454.pythonanywhere.com','127.0.0.1']
+ALLOWED_HOSTS = ['hitesh1454.pythonanywhere.com','127.0.0.1','www.deltatradingbot.co.in']
 
 
 # Application definition
