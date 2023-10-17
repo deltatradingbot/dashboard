@@ -107,8 +107,8 @@ def run(instrument,granularity):
     
     for line in data.signals_text.split("\n"):
         val = line.split(" ")
-        t = val[0]
-        d = val[1]
+        t = val[0].strip()
+        d = val[1].strip()
         output_time = datetime.strptime(t, "%H:%M")
         alert_time = output_time - timedelta(minutes=5)
         alert_time_str = alert_time.strftime("%H:%M")
@@ -120,7 +120,6 @@ def run(instrument,granularity):
             "dir" : d.lower()
         }
         current_time = datetime.now(ist_timezone).strftime("%H:%M")
-        # print(sig['alert'],current_time)
         if sig['alert'] == current_time:
             res = getSignal(instrument,granularity,sig)
             if res:

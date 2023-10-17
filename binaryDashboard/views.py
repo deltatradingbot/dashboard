@@ -6,7 +6,7 @@ from django.conf import settings
 import pytz
 from django.contrib.auth.models import User
 from authApp.models import PaymentModal
-
+ist_timezone = pytz.timezone('Asia/Kolkata')
 
 def IndexPage(request):
     return render(request, 'index.html')
@@ -14,14 +14,19 @@ def IndexPage(request):
 def DashboardPage(request):
     if request.user.is_authenticated:
         user_id = User.objects.get(email=request.user.email).pk
-        payObj = PaymentModal.objects.filter(user_id=user_id)
-        if not payObj.exists():
-            return render(request, 'dashboard-locked.html')
-        elif not payObj[0].verified:
-            return render(request, 'dashboard-locked.html')
+        # payObj = PaymentModal.objects.filter(user_id=user_id)
+        # if not payObj.exists():
+        #     return render(request, 'dashboard-locked.html')
+        # elif not payObj[0].verified:
+        #     return render(request, 'dashboard-locked.html')
     else:
         return redirect('/auth/login')
     lines = []
+    current_time = datetime.now(ist_timezone).strftime("%H")
+    if current_time == '10':
+        with open(os.path.join(settings.BASE_DIR,'signal_history.txt'), 'w') as file:
+            file.truncate()
+
     with open(os.path.join(settings.BASE_DIR,'signal_history.txt'), 'r') as file:
         for line in file:
             l = {}
@@ -38,11 +43,11 @@ def DashboardPage(request):
 def RulesPage(request):
     if request.user.is_authenticated:
         user_id = User.objects.get(email=request.user.email).pk
-        payObj = PaymentModal.objects.filter(user_id=user_id)
-        if not payObj.exists():
-            return render(request, 'dashboard-locked.html')
-        elif not payObj[0].verified:
-            return render(request, 'dashboard-locked.html')
+        # payObj = PaymentModal.objects.filter(user_id=user_id)
+        # if not payObj.exists():
+        #     return render(request, 'dashboard-locked.html')
+        # elif not payObj[0].verified:
+        #     return render(request, 'dashboard-locked.html')
     else:
         return redirect('/auth/login')
     return render(request,'rules.html')
@@ -50,11 +55,11 @@ def RulesPage(request):
 def DisclaimerPage(request):
     if request.user.is_authenticated:
         user_id = User.objects.get(email=request.user.email).pk
-        payObj = PaymentModal.objects.filter(user_id=user_id)
-        if not payObj.exists():
-            return render(request, 'dashboard-locked.html')
-        elif not payObj[0].verified:
-            return render(request, 'dashboard-locked.html')
+        # payObj = PaymentModal.objects.filter(user_id=user_id)
+        # if not payObj.exists():
+        #     return render(request, 'dashboard-locked.html')
+        # elif not payObj[0].verified:
+        #     return render(request, 'dashboard-locked.html')
     else:
         return redirect('/auth/login')
     return render(request,'disclaimer.html')
@@ -62,13 +67,14 @@ def DisclaimerPage(request):
 def SignalsAPI(request):
     if request.user.is_authenticated:
         user_id = User.objects.get(email=request.user.email).pk
-        payObj = PaymentModal.objects.filter(user_id=user_id)
-        if not payObj.exists():
-            return render(request, 'dashboard-locked.html')
-        elif not payObj[0].verified:
-            return render(request, 'dashboard-locked.html')
+        # payObj = PaymentModal.objects.filter(user_id=user_id)
+        # if not payObj.exists():
+        #     return render(request, 'dashboard-locked.html')
+        # elif not payObj[0].verified:
+        #     return render(request, 'dashboard-locked.html')
     else:
         return redirect('/auth/login')
+
     instrument = "EUR_USD"
     granularity = "M5"
     res = run(instrument,granularity)

@@ -10,21 +10,25 @@ from datetime import datetime
 def LoginPage(request):
     if request.user.is_authenticated:
         user_id = User.objects.get(email=request.user.email).pk
-        payObj = PaymentModal.objects.filter(user_id=user_id)
-        if not payObj.exists():
-            return render(request, 'dashboard-locked.html')
-        elif not payObj[0].verified:
-            return render(request, 'dashboard-locked.html')
+        # payObj = PaymentModal.objects.filter(user_id=user_id)
+        # if not payObj.exists():
+        #     return render(request, 'dashboard-locked.html')
+        # elif not payObj[0].verified:
+        #     return render(request, 'dashboard-locked.html')
         return redirect('/dashboard')
     if request.method == "POST":
         email = request.POST.get('email')
-        password =request.POST.get('pass')   
-        user = User.objects.get(email=email.lower())
-        user = authenticate(request, username=user, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/dashboard')
-        else:
+        password =request.POST.get('pass')
+        try:
+            user = User.objects.get(email=email.lower())
+            user = authenticate(request, username=user, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/dashboard')
+            else:
+                messages.error(request, "Login Failed!")
+                return render(request, 'login.html')
+        except:
             messages.error(request, "Login Failed!")
             return render(request, 'login.html')
     return render(request, 'login.html')
@@ -36,11 +40,11 @@ def LogoutView(request):
 def RegisterPage(request):
     if request.user.is_authenticated:
         user_id = User.objects.get(email=request.user.email).pk
-        payObj = PaymentModal.objects.filter(user_id=user_id)
-        if not payObj.exists():
-            return render(request, 'dashboard-locked.html')
-        elif not payObj[0].verified:
-            return render(request, 'dashboard-locked.html')
+        # payObj = PaymentModal.objects.filter(user_id=user_id)
+        # if not payObj.exists():
+        #     return render(request, 'dashboard-locked.html')
+        # elif not payObj[0].verified:
+        #     return render(request, 'dashboard-locked.html')
         return redirect('/dashboard')
     if request.method == "POST":
         name = request.POST['name']
@@ -52,8 +56,13 @@ def RegisterPage(request):
         try:
             user = User.objects.create_user(username = name,email=email, password=pwrd)
             messages.success(request, "Congrats! You are registered successfully.")
-            return redirect('/auth/login')
-        except:
+            user = User.objects.get(email=email.lower())
+            user = authenticate(request, username=user, password=pwrd)
+            if user is not None:
+                login(request, user)
+            return render(request, 'dashboard-locked.html')
+        except Exception as e:
+            print(e)
             messages.error(request, "User already registered!!")
 
     return render(request, 'register.html')
@@ -62,7 +71,7 @@ def PaymentPage(request):
     if request.method == "POST":
         if request.POST['ref']:
             user_id = User.objects.get(email=request.user.email).pk
-            my_instance = PaymentModal(user_id=user_id, pay_id=request.POST['ref'],latest_pay=datetime.now())
+            my_instance = PaymentModal(user_id=user_id,email=request.user.email, pay_id=request.POST['ref'],latest_pay=datetime.now())
             my_instance.save()
             return redirect('/auth/pay-verify')
         else:
